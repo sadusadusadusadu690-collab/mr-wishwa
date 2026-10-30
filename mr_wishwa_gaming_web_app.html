@@ -1,0 +1,749 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MR WISHWA | Free Fire Gaming Hub</title>
+    <!-- Font Awesome for Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Teko:wght@500;700&family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --primary: #e60023;
+            --primary-hover: #ff233f;
+            --bg-dark: #0a0a0c;
+            --card-bg: #141419;
+            --card-border: #262630;
+            --text-main: #f3f3f5;
+            --text-muted: #9a9ab0;
+            --accent-glow: rgba(230, 0, 35, 0.35);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        body {
+            background-color: var(--bg-dark);
+            color: var(--text-main);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            background-image: 
+                radial-gradient(circle at 10% 20%, rgba(230, 0, 35, 0.08) 0%, transparent 40%),
+                radial-gradient(circle at 90% 80%, rgba(255, 35, 63, 0.05) 0%, transparent 40%);
+        }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #0d0d11;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #2a2a35;
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: var(--primary);
+        }
+
+        /* Header Styling */
+        header {
+            background: rgba(18, 18, 24, 0.85);
+            backdrop-filter: blur(12px);
+            border-bottom: 2px solid var(--primary);
+            padding: 15px 5%;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .brand {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            text-decoration: none;
+        }
+
+        .logo {
+            background: linear-gradient(135deg, #1f0005, #38000a);
+            color: var(--primary-hover);
+            border: 2px solid var(--primary);
+            padding: 8px 16px;
+            font-family: 'Teko', sans-serif;
+            font-size: 28px;
+            font-weight: 700;
+            border-radius: 10px;
+            letter-spacing: 2px;
+            box-shadow: 0 0 15px var(--accent-glow);
+            text-transform: uppercase;
+        }
+
+        .brand-text h1 {
+            font-family: 'Teko', sans-serif;
+            font-size: 32px;
+            line-height: 0.9;
+            color: #fff;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+        }
+
+        .brand-text p {
+            font-size: 11px;
+            color: var(--primary-hover);
+            font-weight: 600;
+            letter-spacing: 2px;
+        }
+
+        /* Hero Section */
+        .hero {
+            text-align: center;
+            padding: 50px 20px;
+            background: linear-gradient(180deg, rgba(230,0,35,0.12) 0%, rgba(10,10,12,0) 100%);
+            border-bottom: 1px solid rgba(255,255,255,0.05);
+            position: relative;
+        }
+
+        .hero h2 {
+            font-family: 'Teko', sans-serif;
+            font-size: 48px;
+            color: #fff;
+            text-shadow: 0 0 10px rgba(230, 0, 35, 0.5);
+            letter-spacing: 2px;
+            margin-bottom: 8px;
+        }
+
+        .hero p {
+            color: var(--text-muted);
+            max-width: 600px;
+            margin: 0 auto 25px;
+            font-size: 14px;
+        }
+
+        /* Buttons */
+        .btn {
+            border: none;
+            padding: 12px 26px;
+            border-radius: 8px;
+            background: linear-gradient(135deg, var(--primary), #b3001b);
+            color: white;
+            font-weight: 600;
+            font-size: 14px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            box-shadow: 0 4px 15px var(--accent-glow);
+        }
+
+        .btn:hover {
+            background: linear-gradient(135deg, var(--primary-hover), var(--primary));
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(255, 35, 63, 0.5);
+        }
+
+        .btn:active {
+            transform: translateY(0);
+        }
+
+        /* Upload Modal / Box */
+        .upload-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            backdrop-filter: blur(5px);
+            z-index: 200;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .upload-box {
+            width: 100%;
+            max-width: 500px;
+            background: var(--card-bg);
+            border: 1px solid var(--card-border);
+            border-radius: 16px;
+            padding: 30px;
+            position: relative;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.8), 0 0 20px rgba(230, 0, 35, 0.2);
+            animation: modalFadeIn 0.3s ease forwards;
+        }
+
+        @keyframes modalFadeIn {
+            from { opacity: 0; transform: scale(0.95); }
+            to { opacity: 1; transform: scale(1); }
+        }
+
+        .upload-box h2 {
+            font-family: 'Teko', sans-serif;
+            font-size: 32px;
+            color: var(--primary-hover);
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .close-btn {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: transparent;
+            border: none;
+            color: var(--text-muted);
+            font-size: 20px;
+            cursor: pointer;
+            transition: color 0.2s;
+        }
+
+        .close-btn:hover {
+            color: #fff;
+        }
+
+        .input-group {
+            margin-bottom: 20px;
+        }
+
+        .input-group label {
+            display: block;
+            font-size: 13px;
+            color: var(--text-muted);
+            margin-bottom: 8px;
+        }
+
+        input[type="text"],
+        input[type="file"] {
+            width: 100%;
+            padding: 12px 15px;
+            background: #0c0c0f;
+            color: white;
+            border: 1px solid var(--card-border);
+            border-radius: 8px;
+            outline: none;
+            transition: border-color 0.3s;
+        }
+
+        input[type="text"]:focus,
+        input[type="file"]:focus {
+            border-color: var(--primary);
+        }
+
+        /* File input styling */
+        input[type="file"]::file-selector-button {
+            background: #22222c;
+            color: #fff;
+            border: none;
+            padding: 6px 12px;
+            border-radius: 4px;
+            cursor: pointer;
+            margin-right: 10px;
+            transition: background 0.2s;
+        }
+
+        input[type="file"]::file-selector-button:hover {
+            background: var(--primary);
+        }
+
+        /* Section Title */
+        .main-container {
+            max-width: 1300px;
+            margin: 0 auto;
+            padding: 40px 20px;
+            width: 100%;
+            flex: 1;
+        }
+
+        .section-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 25px;
+            border-bottom: 1px solid var(--card-border);
+            padding-bottom: 15px;
+        }
+
+        .section-title {
+            font-family: 'Teko', sans-serif;
+            font-size: 36px;
+            color: #fff;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            letter-spacing: 1px;
+        }
+
+        .section-title i {
+            color: var(--primary);
+        }
+
+        .video-count {
+            background: #1f1f2a;
+            color: var(--text-muted);
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+        }
+
+        /* Video Grid */
+        .video-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 25px;
+        }
+
+        /* Video Card */
+        .video-card {
+            background: var(--card-bg);
+            border: 1px solid var(--card-border);
+            border-radius: 12px;
+            overflow: hidden;
+            transition: all 0.3s ease;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .video-card:hover {
+            transform: translateY(-5px);
+            border-color: var(--primary);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.5), 0 0 15px rgba(230, 0, 35, 0.2);
+        }
+
+        .video-wrapper {
+            position: relative;
+            width: 100%;
+            background: #000;
+            aspect-ratio: 16 / 9;
+        }
+
+        video {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+        }
+
+        .video-info {
+            padding: 18px;
+            display: flex;
+            flex-direction: column;
+            flex-grow: 1;
+            justify-content: space-between;
+        }
+
+        .video-title {
+            font-size: 16px;
+            font-weight: 600;
+            color: #fff;
+            margin-bottom: 15px;
+            line-height: 1.4;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+        }
+
+        .card-actions {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+        }
+
+        .download-btn {
+            flex: 1;
+            text-align: center;
+            padding: 10px;
+            background: #1e1e28;
+            color: #fff;
+            text-decoration: none;
+            border-radius: 6px;
+            font-size: 13px;
+            font-weight: 600;
+            transition: all 0.2s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+            border: 1px solid var(--card-border);
+        }
+
+        .download-btn:hover {
+            background: var(--primary);
+            border-color: var(--primary);
+            color: #fff;
+        }
+
+        .delete-btn {
+            background: rgba(255, 255, 255, 0.05);
+            color: #ff4a4a;
+            border: 1px solid rgba(255, 74, 74, 0.2);
+            padding: 10px 14px;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .delete-btn:hover {
+            background: #ff4a4a;
+            color: #fff;
+            border-color: #ff4a4a;
+        }
+
+        /* Empty State */
+        .empty-state {
+            grid-column: 1 / -1;
+            text-align: center;
+            padding: 60px 20px;
+            background: var(--card-bg);
+            border: 1px dashed var(--card-border);
+            border-radius: 12px;
+            color: var(--text-muted);
+        }
+
+        .empty-state i {
+            font-size: 48px;
+            color: #333344;
+            margin-bottom: 15px;
+        }
+
+        /* Footer */
+        footer {
+            text-align: center;
+            padding: 30px 20px;
+            background: #060608;
+            border-top: 1px solid var(--card-border);
+            color: var(--text-muted);
+            font-size: 13px;
+            margin-top: auto;
+        }
+
+        footer p span {
+            color: var(--primary-hover);
+            font-weight: 600;
+        }
+
+        /* Toast Notifications */
+        .toast-container {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            z-index: 1000;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .toast {
+            background: var(--card-bg);
+            border-left: 4px solid var(--primary);
+            color: #fff;
+            padding: 12px 20px;
+            border-radius: 6px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.5);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            animation: slideIn 0.3s ease;
+            font-size: 13px;
+        }
+
+        @keyframes slideIn {
+            from { transform: translateX(100%); opacity: 0; }
+            to { transform: translateX(0); opacity: 1; }
+        }
+
+        /* Mobile Adjustments */
+        @media (max-width: 600px) {
+            header {
+                padding: 12px 15px;
+            }
+            .brand-text h1 {
+                font-size: 26px;
+            }
+            .hero h2 {
+                font-size: 36px;
+            }
+            .video-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- Header Section -->
+    <header>
+        <a href="#" class="brand">
+            <div class="logo">MR W</div>
+            <div class="brand-text">
+                <h1>MR WISHWA</h1>
+                <p>FREE FIRE GAMING HUB</p>
+            </div>
+        </a>
+        <button class="btn" onclick="toggleUploadModal(true)">
+            <i class="fa-solid fa-plus"></i> Upload Video
+        </button>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <h2><i class="fa-solid fa-fire"></i> FREE FIRE HIGHLIGHTS <i class="fa-solid fa-fire"></i></h2>
+        <p>Watch, enjoy, and download high-quality Free Fire gameplay and clips uploaded by MR WISHWA & the community!</p>
+        <button class="btn" onclick="toggleUploadModal(true)">
+            <i class="fa-solid fa-cloud-arrow-up"></i> Share Your Video
+        </button>
+    </section>
+
+    <!-- Upload Modal Container -->
+    <div class="upload-overlay" id="uploadModal">
+        <div class="upload-box">
+            <button class="close-btn" onclick="toggleUploadModal(false)"><i class="fa-solid fa-xmark"></i></button>
+            <h2><i class="fa-solid fa-video"></i> Upload Gameplay</h2>
+            
+            <form id="uploadForm">
+                <div class="input-group">
+                    <label for="videoTitle">Video Title</label>
+                    <input type="text" id="videoTitle" placeholder="e.g., One Tap Headshot Gameplay 🎯" required maxlength="80">
+                </div>
+
+                <div class="input-group">
+                    <label for="videoFile">Select Video File</label>
+                    <input type="file" id="videoFile" accept="video/*" required>
+                </div>
+
+                <button type="submit" class="btn" style="width: 100%; justify-content: center; margin-top: 10px;">
+                    <i class="fa-solid fa-upload"></i> Publish Video
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Main Content Container -->
+    <main class="main-container">
+        <div class="section-header">
+            <h2 class="section-title">
+                <i class="fa-solid fa-gamepad"></i> VIDEO LIBRARY
+            </h2>
+            <span class="video-count" id="videoCount">0 Videos</span>
+        </div>
+
+        <!-- Video Cards Grid -->
+        <section class="video-grid" id="videoGrid">
+            <!-- Dynamic Video Cards Will Be Inserted Here -->
+        </section>
+    </main>
+
+    <!-- Toast Notifications Container -->
+    <div class="toast-container" id="toastContainer"></div>
+
+    <!-- Footer Section -->
+    <footer>
+        <p>© 2026 <span>MR WISHWA</span> | All Rights Reserved.</p>
+        <p style="margin-top: 5px; font-size: 11px;">Dedicated to Free Fire Gamers World Wide 🔥</p>
+    </footer>
+
+    <!-- Application Script -->
+    <script>
+        // UI Elements
+        const uploadModal = document.getElementById("uploadModal");
+        const uploadForm = document.getElementById("uploadForm");
+        const videoGrid = document.getElementById("videoGrid");
+        const videoCount = document.getElementById("videoCount");
+        const toastContainer = document.getElementById("toastContainer");
+
+        // Initial Sample Demo Videos (Uses royalty-free public domain sample MP4s)
+        let videos = [
+            {
+                id: "sample-1",
+                title: "🔥 Free Fire Insane Headshots Highlight Compilation #1",
+                file: { name: "FF_Headshots_Highlight.mp4" },
+                url: "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerBlazes.mp4",
+                isSample: true
+            },
+            {
+                id: "sample-2",
+                title: "🎯 Squad Wipe Challenge - Solo Vs Squad Gameplay",
+                file: { name: "Solo_Vs_Squad_Wipe.mp4" },
+                url: "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerEscapes.mp4",
+                isSample: true
+            }
+        ];
+
+        // Initialize App
+        window.addEventListener('DOMContentLoaded', () => {
+            renderVideos();
+        });
+
+        // Toggle Upload Modal Visibility
+        function toggleUploadModal(show) {
+            uploadModal.style.display = show ? "flex" : "none";
+            if(!show) uploadForm.reset();
+        }
+
+        // Close Modal when clicking background overlay
+        uploadModal.addEventListener('click', function(e) {
+            if (e.target === uploadModal) {
+                toggleUploadModal(false);
+            }
+        });
+
+        // Handle Video Upload
+        uploadForm.addEventListener("submit", function(event) {
+            event.preventDefault();
+
+            const titleInput = document.getElementById("videoTitle");
+            const fileInput = document.getElementById("videoFile");
+
+            const title = titleInput.value.trim();
+            const file = fileInput.files[0];
+
+            if (!file) {
+                showToast("Please select a video file to upload.", "error");
+                return;
+            }
+
+            if (!file.type.startsWith("video/")) {
+                showToast("Invalid file format. Please upload a valid video.", "error");
+                return;
+            }
+
+            // Create ObjectURL for user uploaded local video file
+            const objectUrl = URL.createObjectURL(file);
+
+            const newVideo = {
+                id: Date.now() + Math.random().toString(36).substring(2, 9),
+                title: title,
+                file: file,
+                url: objectUrl,
+                isSample: false
+            };
+
+            // Prepend new video to grid
+            videos.unshift(newVideo);
+
+            renderVideos();
+            toggleUploadModal(false);
+            showToast("Video uploaded successfully!");
+        });
+
+        // Render Video Grid
+        function renderVideos() {
+            videoGrid.innerHTML = "";
+            videoCount.textContent = `${videos.length} ${videos.length === 1 ? 'Video' : 'Videos'}`;
+
+            if (videos.length === 0) {
+                videoGrid.innerHTML = `
+                    <div class="empty-state">
+                        <i class="fa-solid fa-video-slash"></i>
+                        <h3>No Videos Available</h3>
+                        <p style="margin-top: 5px;">Be the first to upload a Free Fire video clip!</p>
+                    </div>
+                `;
+                return;
+            }
+
+            videos.forEach(function(video) {
+                const card = document.createElement("article");
+                card.className = "video-card";
+
+                const videoWrapper = document.createElement("div");
+                videoWrapper.className = "video-wrapper";
+
+                const player = document.createElement("video");
+                player.src = video.url;
+                player.controls = true;
+                player.preload = "metadata";
+
+                videoWrapper.appendChild(player);
+
+                const info = document.createElement("div");
+                info.className = "video-info";
+
+                const title = document.createElement("h3");
+                title.className = "video-title";
+                title.textContent = video.title;
+
+                const actions = document.createElement("div");
+                actions.className = "card-actions";
+
+                // Download Button
+                const downloadBtn = document.createElement("a");
+                downloadBtn.className = "download-btn";
+                downloadBtn.href = video.url;
+                downloadBtn.download = video.file ? video.file.name : "FreeFire_Video.mp4";
+                downloadBtn.target = "_blank";
+                downloadBtn.innerHTML = `<i class="fa-solid fa-download"></i> Download`;
+
+                // Delete Button
+                const deleteBtn = document.createElement("button");
+                deleteBtn.className = "delete-btn";
+                deleteBtn.title = "Delete Video";
+                deleteBtn.innerHTML = `<i class="fa-solid fa-trash-can"></i>`;
+
+                deleteBtn.addEventListener("click", function() {
+                    // Revoke ObjectURL to release memory if not a sample
+                    if (!video.isSample && video.url) {
+                        URL.revokeObjectURL(video.url);
+                    }
+
+                    videos = videos.filter(function(item) {
+                        return item.id !== video.id;
+                    });
+
+                    renderVideos();
+                    showToast("Video deleted.", "info");
+                });
+
+                actions.appendChild(downloadBtn);
+                actions.appendChild(deleteBtn);
+
+                info.appendChild(title);
+                info.appendChild(actions);
+
+                card.appendChild(videoWrapper);
+                card.appendChild(info);
+
+                videoGrid.appendChild(card);
+            });
+        }
+
+        // Custom Toast Notification Function
+        function showToast(message, type = "success") {
+            const toast = document.createElement("div");
+            toast.className = "toast";
+            
+            const icon = type === "error" ? "fa-circle-exclamation" : (type === "info" ? "fa-circle-info" : "fa-circle-check");
+            const color = type === "error" ? "#ff4a4a" : (type === "info" ? "#3a86ff" : "#00e676");
+            
+            toast.style.borderLeftColor = color;
+            toast.innerHTML = `<i class="fa-solid ${icon}" style="color: ${color};"></i> ${message}`;
+
+            toastContainer.appendChild(toast);
+
+            setTimeout(() => {
+                toast.style.opacity = "0";
+                toast.style.transform = "translateX(100%)";
+                toast.style.transition = "all 0.3s ease";
+                setTimeout(() => toast.remove(), 300);
+            }, 3000);
+        }
+    </script>
+</body>
+</html>
